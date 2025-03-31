@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="website icon" type="png" href="/static/images/icon.jpg">
+    <title>Loan Fetch</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+        }
+
+        .form-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 440px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin: 0 0 30px 0;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            width: calc(100% - 22px);
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            margin: 0;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .error, .success {
+            color: #fff;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .error {
+            background-color: #ff4d4d;
+        }
+
+        .success {
+            background-color: #4caf50;
+        }
+
+        .account-details {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Loan Details</h1>
+        <form method="post">
+            {% csrf_token %}
+            <label for="account_number">Account Number:</label>
+            {{ form.account_number.label_tag }}
+            {{ form.account_number }}
+            {% if form.account_number.errors %}
+            <div class="error">
+                {% for error in form.account_number.errors %}
+                {{ error }}
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% if error %}
+                <div class="error">{{ error }}</div>
+            {% endif %}
+            <button type="submit">Fetch Details</button>
+        </form>
+        {% if account_details %}
+            <div class="account-details">
+                <h3>Account Details:</h3>
+                <p><strong>Account Holder Name:</strong> {{ account_details.fname }} {{ account_details.lname }}</p>
+                <p><strong>Account Number:</strong> {{ account_details.account_number }}</p>
+                <p><strong>Email:</strong> {{ account_details.email }}</p>
+                
+            </div>
+            <div class="button-group">
+                <a href="{% url 'get_loan' account_details.account_number %}">
+                    <button type="button">Get Loan</button>
+                </a>
+                <a href="{% url 'pay_loan' account_details.account_number %}">
+                    <button type="button">Pay Loan</button>
+                </a>
+                <a href="{% url 'close_loan' account_details.account_number %}">
+                    <button type="button">Close Loan</button>
+                </a>
+                <a href="{% url 'loan_list' account_details.account_number %}">
+                    <button type="button">Loan List</button>
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

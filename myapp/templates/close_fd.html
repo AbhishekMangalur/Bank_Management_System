@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="website icon" type="png" href="/static/images/icon.jpg">
+    <title>Close Fixed Deposit</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 440px;
+            margin: auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin: 0 0 30px 0;
+        }
+
+        .close-fd-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .close-fd-form label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        .close-fd-form select {
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .close-fd-form option {
+            padding: 8px;
+        }
+
+        .btn-submit {
+            padding: 12px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .btn-submit:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>FD Closing Form</h1>
+        
+        <form method="post" class="close-fd-form">
+            {% csrf_token %}
+            <label for="fd">Select Fixed Deposit:</label>
+            <select name="fd_id" id="fd" required>
+                <option value="">-----------</option>
+                {% for fd in fds %}
+                    <option value="{{ fd.id }}">FD {{ fd.pk }} - Principal: {{ fd.principal_amount }} - Maturity: {{ fd.maturity_date }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn-submit">Close</button>
+        </form>
+    </div>
+</body>
+</html>

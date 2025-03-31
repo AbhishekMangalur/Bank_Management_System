@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="website icon" type="png" href="/static/images/icon.jpg">
+    <title>Create Fixed Deposit</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 440px;
+            margin: auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin: 0 0 30px 0;
+        }
+
+        .fd-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .fd-form label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        .fd-form input[type="text"],
+        .fd-form input[type="number"],
+        .fd-form input[type="date"],
+        .fd-form select,
+        .fd-form input[type="hidden"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .btn-submit:hover {
+            background-color: #0056b3;
+        }
+
+        .success-message {
+            color: green;
+            background-color: #e7f5e7;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .errorlist {
+            color: #fff;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: -5px;
+            text-align: center;
+            background-color: #ff4d4d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Create Fixed Deposit</h1>
+        
+        <form method="post" class="fd-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            {% if error %}
+                <div class="error">{{ error }}</div>
+            {% endif %}
+            <input type="hidden" name="account_number" value="{{ account_number }}">
+            <button type="submit" class="btn-submit">Apply FD</button>
+        </form>
+    </div>
+</body>
+</html>

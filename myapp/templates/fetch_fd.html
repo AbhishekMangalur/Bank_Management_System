@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="website icon" type="png" href="/static/images/icon.jpg">
+    <title>Fetch FD</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 440px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1{
+            color: #333;
+            text-align: center;
+            margin: 0 0 30px 0;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+        label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            width: calc(100% - 22px);
+        }
+
+        .error {
+            color: #fff;
+            padding: 10px;
+            border-radius: 4px;
+            text-align: center;
+            background-color: #ff4d4d;
+            margin-top: 20px;
+        }
+
+        form p {
+            margin-bottom: 15px;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .actions a {
+            flex-grow: 1;
+        }
+
+        .account-details {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+        .form-container{
+            margin-top: -10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Fixed Deposits</h1><br>
+
+        <!-- Form to fetch account details -->
+        <form method="post">
+            {% csrf_token %}
+            <label for="account_number">Account Number:</label>
+            <div class="form-container">
+                {{ form.as_p }}
+                
+                <!-- Display error message inside the form container -->
+                {% if error %}
+                    <p class="error">{{ error }}</p>
+                {% endif %}
+            </div>
+            <div class="button-container">
+                <button type="submit">Fetch Details</button>
+            </div>
+        </form>
+
+        <!-- If account holder details exist -->
+        {% if account_holder %}
+            <div class="account-details">
+                <h3>Account Details:</h3>
+                <p><strong>Account Holder Name:</strong> {{ account_holder.fname }} {{ account_holder.lname }}</p>
+                <p><strong>Email:</strong> {{ account_holder.email }}</p>
+            </div><br>
+
+            <!-- Actions if account exists (Create FD, Close FD, FD List) -->
+            {% if show_create_fd_button %}
+                <div class="actions">
+                    <a href="{% url 'create_fd' account_number=account_holder.account_number %}">
+                        <button type="button">Create FD</button>
+                    </a>
+                    <a href="{% url 'close_fd' account_number=account_holder.account_number %}">
+                        <button type="button">Close FD</button>
+                    </a>
+                    <a href="{% url 'fd_list' account_number=account_holder.account_number %}">
+                        <button type="button">FD List</button>
+                    </a>
+                </div>
+            {% endif %}
+
+            <!-- Display Fixed Deposits if they exist -->
+            {% if fds.exists %}
+                <h3>Fixed Deposits:</h3>
+                <ul>
+                    {% for fd in fds %}
+                        <li>
+                            FD ID: {{ fd.id }}, Principal: ₹{{ fd.principal_amount }}, 
+                            Interest Rate: {{ fd.interest_rate }}%, 
+                            Start Date: {{ fd.start_date }}, 
+                            Maturity Date: {{ fd.maturity_date }},
+                            Matured Amount: ₹{{ fd.matured_amount }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endif %}
+    </div>
+</body>
+
+</body>
+</html>

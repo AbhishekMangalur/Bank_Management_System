@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="website icon" type="png" href="/static/images/icon.jpg">
+    <title>Fixed Deposit List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 440px;
+            width: 100%;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin: 0 0 30px 0;
+        }
+
+        .fd-item {
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .fd-item h2 {
+            font-size: 17px;
+            color: #555;
+            margin: 5px;
+        }
+
+        .fd-item .fd-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .fd-item .fd-details div {
+            display: flex;
+        }
+
+        .fd-item .fd-details .label {
+            width: 210px;
+            font-weight: bold;
+            color: #555;
+            border-top: 1px solid #ddd;
+            padding: 5px;
+        }
+
+        .fd-item .fd-details .value {
+            flex: 1;
+            color: #333;
+            border-top: 1px solid #ddd;
+            border-left: 1px solid #ddd;
+            padding: 5px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+            display: block;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                width: 90%;
+            }
+
+            .fd-item .fd-details .label {
+                width: 115px;
+                font-size: 14px;
+            }
+
+            .fd-item .fd-details .value {
+                font-size: 14px;
+            }
+
+            button {
+                font-size: 14px;
+                padding: 8px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Fixed Deposit List</h1>
+
+        {% if fds %}
+            {% for fd in fds %}
+                <div class="fd-item">
+                    <h2>FD ID: {{ fd.id }}</h2>
+                    <div class="fd-details">
+                        <div><span class="label">Principal Amount:</span><span class="value">₹ {{ fd.principal_amount }}</span></div>
+                        <div><span class="label">Interest Rate:</span><span class="value">{{ fd.interest_rate }}%</span></div>
+                        <div><span class="label">Start Date:</span><span class="value">{{ fd.start_date }}</span></div>
+                        <div><span class="label">Maturity Date:</span><span class="value">{{ fd.maturity_date }}</span></div>
+                        <div><span class="label">Matured Amount:</span><span class="value">₹ {{ fd.matured_amount }}</span></div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No Fixed Deposits available.</p>
+        {% endif %}
+
+        <a href="{% url 'home' %}"><button>Back to Home</button></a>
+    </div>
+</body>
+</html>
